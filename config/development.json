@@ -1,0 +1,6 @@
+{
+    "name": "Gubu Express App",
+    "mail": {
+        "host": "dev-mail-server"
+    }
+}
