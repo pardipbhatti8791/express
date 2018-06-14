@@ -10,6 +10,7 @@ const courses = require('./routes/courses');
 const home = require('./routes/home');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
+// const tweets = require('./routes/tweets');
 
 const express = require('express');
 const app = express();
@@ -42,6 +43,7 @@ app.use('/', home);
 app.use('/api/courses', courses)
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
+// app.use('/api/twt', tweets);
 
 // console.log(config.get('name'));
 // console.log(config.get('mail.host'));
