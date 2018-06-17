@@ -1,10 +1,10 @@
+const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db');
 
-const config = require('config');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
@@ -13,9 +13,17 @@ const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
+const users = require('./routes/users');
+const auth = require('./routes/auth');
 
 const express = require('express');
 const app = express();
+
+console.log(config.get('jwtPrivateKey'));
+if (!config.get('jwtPrivateKey')) {
+    console.log('Fatal Error: jwtPrivateKey is not defined');
+    process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/vidly')
 .then(() => console.log('Connected to mongodb'))
@@ -33,9 +41,6 @@ if (app.get('env') === 'development') {
 
 dbDebugger('Connected to the database');
 
-// console.log(process.env.NODE_ENV);
-// console.log(app.get('env'));
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
@@ -46,14 +51,14 @@ app.use('/api/genres', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
+app.use('/api/users', users);
+app.use('/api/auth', auth);
 
-// console.log(config.get('name'));
-// console.log(config.get('mail.host'));
-// console.log(config.get('mail.password'));
 
-// app.use(logger);
 
-// PORT
+/**
+ * @ { Server port }
+ */
 const port = process.env.PORT || 9187;
 app.listen(port, () => {
     console.log(`listing port ${port}`);
