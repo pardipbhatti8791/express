@@ -1,3 +1,5 @@
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db');
@@ -6,11 +8,11 @@ const config = require('config');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
-const courses = require('./routes/courses');
 const home = require('./routes/home');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
-// const tweets = require('./routes/tweets');
+const movies = require('./routes/movies');
+const rentals = require('./routes/rentals');
 
 const express = require('express');
 const app = express();
@@ -40,10 +42,10 @@ app.use(express.static('public'));
 app.use(helmet());
 
 app.use('/', home);
-app.use('/api/courses', courses)
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
-// app.use('/api/twt', tweets);
+app.use('/api/movies', movies);
+app.use('/api/rentals', rentals);
 
 // console.log(config.get('name'));
 // console.log(config.get('mail.host'));
