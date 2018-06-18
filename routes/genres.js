@@ -1,4 +1,5 @@
 const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const {Genre, validateGenre} = require('../model/genres');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -56,7 +57,7 @@ router.put("/:id", async (req, res) => {
 /**
  * @ { delete post }
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id);
   if (!genre)
     return res.status(404).send("The genre with the given ID was not found.");
